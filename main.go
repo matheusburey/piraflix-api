@@ -1,24 +1,21 @@
 package main
 
 import (
-	"encoding/json"
+	"log"
 	"net/http"
+	"piraflix-api/src/config"
+	"piraflix-api/src/routes"
 )
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		// Define o header como JSON
-		w.Header().Set("Content-Type", "application/json")
+	db := config.SetupDatabase()
+	config.InitSchema(db)
+	defer db.Close()
 
-		// Monta a resposta
-		response := map[string]string{
-			"data": "hello world",
-		}
+	// Register routes
+	mux := http.NewServeMux()
+	routes.RegisterMovieRoutes(mux, db)
 
-		// Converte e envia
-		json.NewEncoder(w).Encode(response)
-	})
-
-	// Inicia o servidor
-	http.ListenAndServe(":3333", nil)
+	log.Println("Running on port 8080 🚀")
+	http.ListenAndServe(":8080", mux)
 }

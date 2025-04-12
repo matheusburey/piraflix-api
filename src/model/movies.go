@@ -1,5 +1,14 @@
 package model
 
+type MovieSummary struct {
+	Categories  []string `json:"categories"`
+	Image       string   `json:"image"`
+	Type        string   `json:"type"`
+	Code        string   `json:"code"`
+	ReleaseDate string   `json:"release_date"`
+	Origin      string   `json:"origin"`
+}
+
 type Movies struct {
 	ID          int       `json:"id"`
 	Name        string    `json:"name"`
